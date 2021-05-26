@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import queryString from 'query-string';
 import io from 'socket.io-client';
 
+// Components.
+import InfoBar from '../InfoBar/InfoBar';
+
 let socket;
 
 const Chat = ({ location }) => {
@@ -38,8 +41,32 @@ const Chat = ({ location }) => {
 
     }, [messages])
 
+    // onChange handler for the input field. Do some distructuring of the event object, to access the value prop.
+    const onChange = ({ target: { value } }) => {
+        setMessage(value)
+    }
+
+    // We do some destructuring of the event object, to access the key prop.
+    const sendMessage = (event) => {
+        event.preventDefault();
+
+        if(message) {
+            socket.emit('sendMessage', message, () => setMessage(''));
+        }
+    }
+
     return (
-            <h1> Chat </h1>
+        
+        <div className="outerContainer">
+            <div className="container">
+
+                <InfoBar
+                    room={room}
+                />
+
+            </div>
+        </div>
+
     )
 }
 
